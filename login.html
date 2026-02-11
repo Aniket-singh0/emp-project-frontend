@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EMS Login</title>
+    
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+   <script>
+    if (localStorage.getItem('ems_token')) {
+      window.location.href = '/app/dashboard.html';
+    }
+  </script>
+  <body>
+    <div class="container">
+      <div class="nav">
+        <div class="brand">
+          <div class="logo"></div>
+          <div>
+            <h1>Employee Management System</h1>
+            <div class="muted" style="font-size:12px">MS SQL + Spring Boot + JWT</div>
+          </div>
+        </div>
+        <div class="pill">Web UI</div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="hd">
+            <h2>Login</h2>
+            <div class="muted">Use your username & password</div>
+          </div>
+          <div class="bd">
+            <div class="field">
+              <label>Username</label>
+              <input id="username" placeholder="e.g. admin" autocomplete="username" />
+            </div>
+            <div class="field" style="margin-top:12px">
+              <label>Password</label>
+              <input id="password" type="password" placeholder="••••••••" autocomplete="current-password" />
+            </div>
+            <div class="actions" style="margin-top:14px">
+              <button id="btnLogin" class="btn primary">Login</button>
+              <a class="btn" href="/app/dashboard.html" style="display:none" id="skip">Go to dashboard</a>
+            </div>
+            <div id="toast" class="toast">Tip: First create a user using register (right side) or insert user in DB.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="hd">
+            <h2>Register (Admin only)</h2>
+            <div class="muted">Creates a new user in database (role based)</div>
+          </div>
+          <div class="bd">
+            <div class="field">
+              <label>Username</label>
+              <input id="r_username" placeholder="e.g. hr1" />
+            </div>
+            <div class="field" style="margin-top:12px">
+              <label>Password</label>
+              <input id="r_password" type="password" placeholder="Min 6 chars" />
+            </div>
+            <div class="field" style="margin-top:12px">
+              <label>Role</label>
+              <select id="r_role">
+                <option value="ADMIN">ADMIN</option>
+                <option value="HR">HR</option>
+                <option value="EMPLOYEE">EMPLOYEE</option>
+              </select>
+            </div>
+            <div class="actions" style="margin-top:14px">
+              <button id="btnRegister" class="btn">Register</button>
+            </div>
+            <div class="toast" style="margin-top:12px">
+              Note: <b>register</b> API is public in this demo. In real apps, you should protect it.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/assets/app.js"></script>
+    <script>
+      // auto redirect if already logged in
+      if (localStorage.getItem('ems_token')) { location.href = '/app/dashboard.html'; }
+      document.getElementById('btnLogin').addEventListener('click', handleLogin);
+      document.getElementById('btnRegister').addEventListener('click', handleRegister);
+      document.getElementById('password').addEventListener('keydown', (e)=>{ if(e.key==='Enter') handleLogin(); });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EMS Dashboard</title>
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <div class="container" id="dashboardRoot">
+      <div class="nav">
+      
+        <div class="brand">
+          <div class="logo"></div>
+          <div>
+            <h1>EMS Dashboard</h1>
+            <div class="muted" style="font-size:12px">All operations on web page (JWT secured APIs)</div>
+          </div>
+        </div>
+        <div class="row" style="align-items:center">
+          <div id="userPill" class="pill">-</div>
+          <button id="btnLogout" class="btn danger">Logout</button>
+        </div>
+      </div>
+      
+      
+  <!-- 🌟 HERO / WELCOME SECTION (YAHI ADD KARO) -->
+  <div style="
+    margin-top:20px;
+    padding:25px;
+    border-radius:20px;
+    background:linear-gradient(135deg,#4f8cff,#6c63ff);
+    box-shadow:0 10px 40px rgba(0,0,0,.4);
+  ">
+    <h2 style="margin:0">Welcome to Employee Management System</h2>
+    <p style="margin-top:6px;opacity:.9">
+      Manage Employees • Attendance • Leaves • Salary — all in one place
+    </p>
+  </div>
+      
+
+      <div class="card">
+        <div class="tabs">
+          <button class="tab" data-tab="employees" data-hr-only>Employees</button>
+          <button class="tab" data-tab="attendance" data-hr-only>Attendance</button>
+          <button class="tab" data-tab="leaves">Leaves</button>
+          <button class="tab" data-tab="salary" data-hr-only>Salary</button>
+        </div>
+        <div class="bd">
+          <div id="toast" class="toast">Ready.</div>
+          <div class="hr"></div>
+
+          <!-- Employees -->
+          <div data-pane="employees" data-hr-only>
+            <div class="kpi">
+              <div class="box">
+                <div class="lbl">Employee CRUD</div>
+                <div class="num">/api/employees</div>
+                <div class="muted">ADMIN / HR only</div>
+              </div>
+              <div class="box">
+                <div class="lbl">Search</div>
+                <input id="emp_search" placeholder="Search by name/department/email" />
+                <div class="actions" style="margin-top:10px">
+                  <button class="btn" id="btnEmpSearch">Search</button>
+                  <button class="btn" id="btnEmpPrev">Prev</button>
+                  <button class="btn" id="btnEmpNext">Next</button>
+                </div>
+                <div id="emp_page" class="muted" style="margin-top:8px">-</div>
+              </div>
+            </div>
+
+            <div class="hr"></div>
+
+            <div class="row">
+              <div class="field">
+                <label>Employee ID (for update)</label>
+                <input id="emp_id" placeholder="Leave empty to create" />
+              </div>
+              <div class="field">
+                <label>Name *</label>
+                <input id="emp_name" placeholder="Employee name" />
+              </div>
+              <div class="field">
+                <label>Department</label>
+                <input id="emp_dept" placeholder="IT / HR / Sales" />
+              </div>
+            </div>
+            <div class="row" style="margin-top:12px">
+              <div class="field">
+                <label>Email</label>
+                <input id="emp_email" placeholder="name@email.com" />
+              </div>
+              <div class="field">
+                <label>Phone</label>
+                <input id="emp_phone" placeholder="9876543210" />
+              </div>
+              <div class="field">
+                <label>Join Date</label>
+                <input id="emp_join" type="date" />
+              </div>
+            </div>
+            <div class="actions" style="margin-top:12px">
+              <button id="btnEmpSave" class="btn primary">Save</button>
+              <button id="btnEmpClear" class="btn">Clear</button>
+            </div>
+
+            <div class="hr"></div>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th><th>Name</th><th>Dept</th><th>Email</th><th>Phone</th><th>Join</th><th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="emp_tbody"></tbody>
+            </table>
+          </div>
+
+          <!-- Attendance -->
+          <div data-pane="attendance" style="display:none" data-hr-only>
+            <div class="muted">Mark attendance (ADMIN / HR)</div>
+            <div class="row" style="margin-top:10px">
+              <div class="field">
+                <label>Employee ID</label>
+                <input id="att_empId" placeholder="1" />
+              </div>
+              <div class="field">
+                <label>Date</label>
+                <input id="att_date" type="date" />
+              </div>
+              <div class="field">
+                <label>Status</label>
+                <select id="att_status">
+                  <option value="PRESENT">PRESENT</option>
+                  <option value="ABSENT">ABSENT</option>
+                  <option value="HALF_DAY">HALF_DAY</option>
+                  <option value="LEAVE">LEAVE</option>
+                </select>
+              </div>
+            </div>
+            <div class="actions" style="margin-top:12px">
+              <button id="btnAttMark" class="btn primary">Mark</button>
+            </div>
+
+            <div class="hr"></div>
+            <div class="muted">Monthly report</div>
+            <div class="row" style="margin-top:10px">
+              <div class="field"><label>Employee ID</label><input id="att_rep_empId" placeholder="1" /></div>
+              <div class="field"><label>From</label><input id="att_from" type="date" /></div>
+              <div class="field"><label>To</label><input id="att_to" type="date" /></div>
+            </div>
+            <div class="actions" style="margin-top:12px">
+              <button id="btnAttReport" class="btn">Load Report</button>
+            </div>
+            <table style="margin-top:10px">
+             <thead><tr><th>ID</th><th>Date</th><th>Status</th><th>EmployeeId</th></tr></thead>
+
+              <tbody id="att_tbody"></tbody>
+            </table>
+          </div>
+
+          <!-- Leaves -->
+          <div data-pane="leaves" style="display:none">
+            <div class="muted">Apply / approve leaves</div>
+            <div class="row" style="margin-top:10px">
+              <div class="field"><label>Employee ID</label><input id="lv_empId" placeholder="1" /></div>
+              <div class="field"><label>From</label><input id="lv_from" type="date" /></div>
+              <div class="field"><label>To</label><input id="lv_to" type="date" /></div>
+            </div>
+            <div class="row" style="margin-top:12px">
+              <div class="field" style="min-width:280px">
+                <label>Reason</label>
+                <input id="lv_reason" placeholder="sick / personal" />
+              </div>
+            </div>
+            <div class="actions" style="margin-top:12px">
+              <button id="btnLvApply" class="btn primary">Apply</button>
+              <button id="btnLvLoadAll" class="btn">Load All</button>
+              <button id="btnLvLoadEmp" class="btn">Load For Employee</button>
+            </div>
+
+            <div class="hr"></div>
+            <div class="muted">Decision (ADMIN / HR)</div>
+            <div class="row" style="margin-top:10px">
+              <div class="field"><label>Leave ID</label><input id="lv_id" placeholder="5" /></div>
+              <div class="field">
+                <label>Status</label>
+                <select id="lv_status">
+                  <option value="APPROVED">APPROVED</option>
+                  <option value="REJECTED">REJECTED</option>
+                  <option value="PENDING">PENDING</option>
+                </select>
+              </div>
+            </div>
+            <div class="actions" style="margin-top:12px">
+              <button id="btnLvDecide" class="btn">Submit Decision</button>
+            </div>
+            <table style="margin-top:10px">
+              <thead><tr><th>ID</th><th>EmpId</th><th>From</th><th>To</th><th>Status</th><th>Reason</th></tr></thead>
+              <tbody id="lv_tbody"></tbody>
+            </table>
+          </div>
+
+         <!-- Salary -->
+<div data-pane="salary" style="display:none" data-hr-only>
+  <div class="muted">Set salary (ADMIN / HR)</div>
+
+  <div class="row" style="margin-top:10px">
+    <div class="field"><label>Employee ID</label><input id="sal_empId" placeholder="1" /></div>
+    <div class="field"><label>Month (YYYY-MM)</label><input id="sal_month" type="month" />
+</div>
+    <div class="field"><label>Basic</label><input id="sal_basic" placeholder="50000" /></div>
+  </div>
+
+  <div class="row" style="margin-top:12px">
+    <div class="field"><label>Bonus</label><input id="sal_bonus" placeholder="2000" /></div>
+    <!-- ✅ ID FIX: sal_ded -> sal_d (to match JS) -->
+    <div class="field"><label>Deduction</label><input id="sal_d" placeholder="500" /></div>
+  </div>
+
+  <div class="actions" style="margin-top:12px">
+    <button id="btnSalSet" class="btn primary">Set Salary</button>
+  </div>
+
+  <div class="hr"></div>
+
+  <div class="muted">Salary list</div>
+  <div class="actions" style="margin-top:10px">
+ 
+   <button id="btnSalAuto" class="btn primary">Generate Salary (Auto)</button>
+
+    
+  </div>
+
+  <table style="margin-top:10px">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>EmpId</th>
+        <th>Month</th>
+        <th>Basic</th>
+        <th>Bonus</th>
+        <th>Deduction</th>
+        <th>Net</th>
+      </tr>
+    </thead>
+    <tbody id="sal_tbody"></tbody>
+  </table>
+</div>
+
+    <script src="/assets/app.js"></script>
+  </body>
+</html>
